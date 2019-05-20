@@ -1,59 +1,70 @@
 // from data.js
 var tableData = data;
+var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"];
 
-// YOUR CODE HERE!
-// var p = d3.select("body")
-//   .selectAll("p")
-//   .data([4, 8, 15, 16, 23, 42,21])
-//     .text(function(d) { return d; });
+var table = d3.select("#table-area").append("table")
+                .attr("class", "table table-striped")
+                .attr("id", "ufo-table")
 
-// // Enter…
-// p.enter().append("p")
-//     .text(function(d) { return d; });
+var thead = table.append("thead");
+var tbody = table.append("tbody");
 
-// // Exit…
-// p.exit().remove();
+// Add in the header
+thead.append("tr")
+    .selectAll("th")
+    .data(columns).enter()
+    .append("th")
+    .attr("scope", "col")
+    .text(column => column);
 
-function renderTable(renderData){
-    var tbody = d3.select("#table-area").select("tbody");
+// Add in the rows
+var row = tbody.selectAll("tr")
+                .data(data).enter()
+                .append("tr");
 
-    thead = d3.selectAll(".table-head");
-    thead.attr("scope", "col")
+var cell = row.selectAll("td")
+                .data(row => columns.map(column => row[column]))
+                .enter()
+                .append("td")
+                .text(text => text);
 
-    tbody.selectAll("tr").remove();
-    renderData.forEach((ufoSighting) => {
-        var row = tbody.append("tr");
-        Object.entries(ufoSighting).forEach(([key, value]) => {
-            cell = row.append("td");
-            if (key == "state"){
-                cell.text(value.toUpperCase())
-            }
-            else {
-                cell.text(value);
-            }
-            
-        });
-    });
+
+function update(data){
+    var row = d3.select("#ufo-table")
+                .select("tbody")
+                .selectAll("tr")
+                .data(data)
+                .style("display", d => d)
+                
 }
 
-renderTable(tableData);
-
-var submitBtn = d3.select("#filter-btn");
-
-submitBtn.on("click", function(){
-    d3.event.preventDefault();
-
-    var inputElement = d3.select("#datetime");
-    var inputVal = inputElement.property("value");
-
-    var filteredData = tableData.filter(sighting => sighting.datetime === inputVal);
-    console.log(filteredData.length)
-    if (filteredData.length == 0){
-        renderTable(tableData);
-    }
-    else {
-        renderTable(filteredData);
-    }
+// Update based on selection
+d3.select("#datetime").on("keyup", function(){
+    // d3.event.preventDefault();
+    var targetText = d3.select("#datetime").property("value");
+    var regex = RegExp("^.*" + targetText + ".*$");
     
+    var filteredData = []
+    if (targetText){ // if search string isn't empty
+        filteredData = tableData.map(function(sighting){
+            if (sighting.datetime === targetText){
+                return "";
+            }    
+            else {
+                return "none";
+            }
+        });
+    }
+    else { 
+        filteredData = tableData.map(x => "");
+        console.log("Hello")
+    }
+        
+    // console.log(filteredData);
+    update(filteredData);
 })
-    
+
+// var h2 = d3.select("#truth").style("display", "none");
+
+var regex = RegExp("^.*test.*$")
+console.log(regex.test("sdlkjfd test skdjfksl"));
