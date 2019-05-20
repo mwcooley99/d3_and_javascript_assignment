@@ -42,23 +42,26 @@ function update(data){
 d3.select("#datetime").on("keyup", function(){
     // d3.event.preventDefault();
     var targetText = d3.select("#datetime").property("value");
-    var regex = RegExp("^.*" + targetText + ".*$");
+    console.log(targetText);
+    var regex = RegExp("^.*" + targetText + ".*$|^$");
+    console.log(regex.test(tableData[0].datetime))
     
     var filteredData = []
-    if (targetText){ // if search string isn't empty
+    // if (targetText){ // if search string isn't empty
         filteredData = tableData.map(function(sighting){
-            if (sighting.datetime === targetText){
+            if (regex.test(sighting.datetime)){
                 return "";
             }    
             else {
                 return "none";
             }
         });
-    }
-    else { 
-        filteredData = tableData.map(x => "");
-        console.log("Hello")
-    }
+        console.log(filteredData);
+    // }
+    // else { 
+    //     filteredData = tableData.map(x => "");
+    //     console.log("Hello")
+    // }
         
     // console.log(filteredData);
     update(filteredData);
@@ -66,5 +69,5 @@ d3.select("#datetime").on("keyup", function(){
 
 // var h2 = d3.select("#truth").style("display", "none");
 
-var regex = RegExp("^.*test.*$")
-console.log(regex.test("sdlkjfd test skdjfksl"));
+var regex = RegExp("^.*1/.*$|^$")
+console.log(regex.test(tableData[0].datetime));
