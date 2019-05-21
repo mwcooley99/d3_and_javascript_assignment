@@ -49,20 +49,21 @@ function update(data){
                 
 }
 
-var textFilter = function(regex, obj){
-    return Object.values(obj).some(item => regex.test(item));
-}
-
 // Update based on selection
 d3.selectAll(".filterInput" ).on("keyup", function(){
     var searchType = this.id;
     console.log(searchType);
-    var targetText = d3.select("#" + searchType).property("value");
-    // TODO - regex for comments match word anywhere in comment
-    var regex = RegExp("^" + targetText + ".*$|^$");
+    var targetText = d3.select("#" + searchType).property("value").toLowerCase();
     
-    var filteredData = tableData.map(sighting => regex.test(sighting[searchType]) ? "" : "none");
-    
+    var filteredData = tableData.map(function (sighting) {
+        // Make sure it's a string and lowercase
+        var text = sighting[searchType].toString().toLowerCase();
+        // Match the beginning unless it's a comment
+        var match = searchType === "comments" ? text.includes(targetText) : text.startsWith(targetText);
+        
+        return match ? "" : "none";
+    }) 
+                                                    
     update(filteredData);
 })
 
