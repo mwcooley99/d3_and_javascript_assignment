@@ -6,7 +6,8 @@ var table = d3.select("#table-area").append("table")
                 .attr("class", "table table-striped")
                 .attr("id", "ufo-table")
 
-var thead = table.append("thead");
+var thead = table.append("thead")
+                .attr("id", "table-head");
 var tbody = table.append("tbody");
 
 // Add in the header
@@ -16,6 +17,16 @@ thead.append("tr")
     .append("th")
     .attr("scope", "col")
     .text(column => column);
+
+// append input boxes
+thead.append("tr")
+    .selectAll("th")
+    .data(columns)
+    .enter()
+    .append("th")
+    .append("input")
+    .attr("class", "filterInput")
+    .attr("id", d => d)
 
 // Add in the rows
 var row = tbody.selectAll("tr")
@@ -38,36 +49,21 @@ function update(data){
                 
 }
 
+var textFilter = function(regex, obj){
+    return Object.values(obj).some(item => regex.test(item));
+}
+
 // Update based on selection
-d3.select("#datetime").on("keyup", function(){
-    // d3.event.preventDefault();
-    var targetText = d3.select("#datetime").property("value");
-    console.log(targetText);
-    var regex = RegExp("^.*" + targetText + ".*$|^$");
-    console.log(regex.test(tableData[0].datetime))
+d3.selectAll(".filterInput" ).on("keyup", function(){
+    var searchType = this.id;
+    console.log(searchType);
+    var targetText = d3.select("#" + searchType).property("value");
+    // TODO - regex for comments match word anywhere in comment
+    var regex = RegExp("^" + targetText + ".*$|^$");
     
-    var filteredData = []
-    // if (targetText){ // if search string isn't empty
-        filteredData = tableData.map(function(sighting){
-            if (regex.test(sighting.datetime)){
-                return "";
-            }    
-            else {
-                return "none";
-            }
-        });
-        console.log(filteredData);
-    // }
-    // else { 
-    //     filteredData = tableData.map(x => "");
-    //     console.log("Hello")
-    // }
-        
-    // console.log(filteredData);
+    var filteredData = tableData.map(sighting => regex.test(sighting[searchType]) ? "" : "none");
+    
     update(filteredData);
 })
 
-// var h2 = d3.select("#truth").style("display", "none");
-
-var regex = RegExp("^.*1/.*$|^$")
-console.log(regex.test(tableData[0].datetime));
+console.log()
