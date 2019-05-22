@@ -1,6 +1,7 @@
 // from data.js
 var tableData = data;
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"];
+var columnNames = ["Date", "City", "State", "Country", "Shape", "Duration", "Comments"];
 
 var table = d3.select("#table-area").append("table")
                 .attr("class", "table table-striped")
@@ -13,7 +14,7 @@ var tbody = table.append("tbody");
 // Add in the header
 thead.append("tr")
     .selectAll("th")
-    .data(columns).enter()
+    .data(columnNames).enter()
     .append("th")
     .attr("scope", "col")
     .text(column => column);
