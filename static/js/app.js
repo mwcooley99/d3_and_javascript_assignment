@@ -4,7 +4,7 @@ var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes
 var columnNames = ["Date", "City", "State", "Country", "Shape", "Duration", "Comments"];
 
 var table = d3.select("#table-area").append("table")
-                .attr("class", "table table-striped")
+                .attr("class", "table table-hover table-striped")
                 .attr("id", "ufo-table")
 
 var thead = table.append("thead")
@@ -55,17 +55,18 @@ d3.selectAll(".filterInput" ).on("keyup", function(){
     var searchType = this.id;
     console.log(searchType);
     var targetText = d3.select("#" + searchType).property("value").toLowerCase();
-    
+    console.log(targetText);
     var filteredData = tableData.map(function (sighting) {
         // Make sure it's a string and lowercase
         var text = sighting[searchType].toString().toLowerCase();
+        console.log(text);
         // Match the beginning unless it's a comment
         var match = searchType === "comments" ? text.includes(targetText) : text.startsWith(targetText);
-        
         return match ? "" : "none";
-    }) 
-                                                    
-    update(filteredData);
-})
+    });
 
-console.log()
+    console.log(filteredData)                                                
+    update(filteredData);
+});
+
+console.log();
