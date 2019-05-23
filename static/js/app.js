@@ -3,6 +3,10 @@ var tableData = data;
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"];
 var columnNames = ["Date", "City", "State", "Country", "Shape", "Duration", "Comments"];
 
+// Make dropdown for search
+
+
+// build the table
 var table = d3.select("#table-area").append("table")
                 .attr("class", "table table-hover table-striped")
                 .attr("id", "ufo-table")
