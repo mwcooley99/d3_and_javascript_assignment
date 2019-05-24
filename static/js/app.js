@@ -13,7 +13,7 @@ var option = d3.select("#filter-select")
 
 // build the table
 var table = d3.select("#table-area").append("table")
-                .attr("class", "table table-hover table-striped")
+                .attr("class", "table table-hover table-striped table-dark mt-3")
                 .attr("id", "ufo-table")
 
 var thead = table.append("thead")
