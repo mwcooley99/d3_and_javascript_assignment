@@ -53,9 +53,8 @@ function update(data){
 // Update based on selection
 d3.selectAll("#search-text").on("keyup", function(){
     var searchType = d3.select("#filter-select").property("value");
-    console.log(searchType);
     var targetText = d3.select("#search-text").property("value").toLowerCase();
-    console.log(targetText);
+    
     var filteredData = tableData.map(function (sighting) {
         // Make sure it's a string and lowercase
         var text = sighting[searchType].toString().toLowerCase();
@@ -67,5 +66,3 @@ d3.selectAll("#search-text").on("keyup", function(){
                                                 
     update(filteredData);
 });
-
-console.log();
